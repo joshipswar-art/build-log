@@ -24,8 +24,8 @@ export default async function Page() {
         {/* Header */}
         <div className="mb-10 text-center">
           <AnimatedGradientBadge>
-            <div className="flex items-center gap-2 text-[#a5b4fc]">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#6366f1] live-dot" />
+            <div className="flex items-center gap-2 text-accent-bright">
+              <div className="w-1.5 h-1.5 rounded-full bg-ship live-dot" />
               <span className="uppercase tracking-wider">Live feed</span>
             </div>
           </AnimatedGradientBadge>
@@ -34,19 +34,19 @@ export default async function Page() {
             <AnimatedGradientHeading>Build Log</AnimatedGradientHeading>
           </h1>
 
-          <p className="text-[#6b6b8a] text-sm">
+          <p className="text-muted text-sm">
             What&apos;s your cohort shipping this week?
           </p>
         </div>
 
         {/* Divider with animated counter */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#1e1e2e]" />
-          <span className="text-xs text-[#3a3a5a] tabular-nums">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-border" />
+          <span className="text-xs text-dim tabular-nums">
             <AnimatedCounter target={logs.length} />{" "}
             {logs.length === 1 ? "ship" : "ships"}
           </span>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#1e1e2e]" />
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-border" />
         </div>
 
         {/* Form + Feed (client, shared state) */}

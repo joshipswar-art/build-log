@@ -22,7 +22,7 @@ export default function PostForm({ onSuccess }: { onSuccess?: (log: BuildLog) =>
       particleCount: 80,
       spread: 70,
       origin: { x, y },
-      colors: ["#6366f1", "#a5b4fc", "#818cf8", "#e2e2f0", "#c7d2fe"],
+      colors: ["#6366f1", "#a5b4fc", "#818cf8", "#34d399", "#ededf5"],
       ticks: 200,
       gravity: 0.9,
       scalar: 0.9,
@@ -49,8 +49,8 @@ export default function PostForm({ onSuccess }: { onSuccess?: (log: BuildLog) =>
   return (
     <div className="magic-card p-6 mb-8">
       <div className="flex items-center gap-2 mb-5">
-        <div className="w-2 h-2 rounded-full bg-[#6366f1] live-dot" />
-        <span className="text-xs font-medium text-[#6b6b8a] uppercase tracking-wider">
+        <div className="w-2 h-2 rounded-full bg-ship live-dot" />
+        <span className="text-xs font-medium text-muted uppercase tracking-wider">
           Post a Ship
         </span>
       </div>

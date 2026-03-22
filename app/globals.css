@@ -1,24 +1,37 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0a0a0f;
-  --color-surface: #111118;
-  --color-border: #1e1e2e;
-  --color-accent: #6366f1;
-  --color-text-primary: #e2e2f0;
-  --color-text-secondary: #6b6b8a;
+  /* ── Surfaces ─────────────────────────────────────── */
+  --color-background: #09090f;   /* page bg              */
+  --color-surface:    #0f0f1a;   /* cards / panels       */
+  --color-well:       #0a0a12;   /* sunken inputs        */
+  --color-raised:     #161628;   /* hover state bg       */
+
+  /* ── Borders ──────────────────────────────────────── */
+  --color-border:     #1c1c2c;
+
+  /* ── Text scale ───────────────────────────────────── */
+  --color-fg:         #ededf5;   /* primary text         */
+  --color-muted:      #888898;   /* secondary text       */
+  --color-dim:        #3e3e5c;   /* barely-there text    */
+
+  /* ── Brand accent — indigo ────────────────────────── */
+  --color-accent:        #6366f1;
+  --color-accent-soft:   #818cf8;
+  --color-accent-bright: #a5b4fc;
+
+  /* ── Ship / Live accent — emerald ─────────────────── */
+  --color-ship:          #34d399;
+
+  /* ── Fonts ────────────────────────────────────────── */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Shimmer button animations */
+  /* ── Animations ───────────────────────────────────── */
   --animate-shimmer-slide: shimmer-slide var(--speed, 3s) linear infinite;
-  --animate-spin-around: spin-around calc(var(--speed, 3s) * 2) linear infinite;
-
-  /* Gradient text/badge */
-  --animate-gradient: gradient 6s linear infinite;
-
-  /* Spotlight */
-  --animate-spotlight: spotlight 2s ease 0.75s forwards;
+  --animate-spin-around:   spin-around calc(var(--speed, 3s) * 2) linear infinite;
+  --animate-gradient:      gradient 6s linear infinite;
+  --animate-spotlight:     spotlight 2s ease 0.75s forwards;
 
   @keyframes shimmer-slide {
     0%   { transform: translateX(-100%) translateY(-100%); }
@@ -43,7 +56,7 @@
 
   @keyframes pulse-dot {
     0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
+    50%       { opacity: 0.25; }
   }
 
   @keyframes fadeSlideIn {
@@ -58,8 +71,8 @@
 }
 
 body {
-  background: #0a0a0f;
-  color: #e2e2f0;
+  background: var(--color-background);
+  color: var(--color-fg);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -69,9 +82,9 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, #1e1e2e 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
   background-size: 28px 28px;
-  opacity: 0.5;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 0;
 }
@@ -80,14 +93,14 @@ body::before {
 main { position: relative; z-index: 1; }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: #1e1e2e; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--color-background); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 
 /* ── Magic card ───────────────────────────────────── */
 .magic-card {
   position: relative;
-  background: #111118;
-  border: 1px solid #1e1e2e;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   transition: border-color 0.2s ease, transform 0.15s ease;
   overflow: hidden;
@@ -99,7 +112,7 @@ main { position: relative; z-index: 1; }
   inset: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(99, 102, 241, 0.07),
+    rgba(99, 102, 241, 0.08),
     transparent 40%
   );
   opacity: 0;
@@ -109,26 +122,26 @@ main { position: relative; z-index: 1; }
 }
 
 .magic-card:hover::before   { opacity: 1; }
-.magic-card:hover           { border-color: rgba(99, 102, 241, 0.35); transform: translateY(-1px); }
+.magic-card:hover           { border-color: rgba(99, 102, 241, 0.45); transform: translateY(-1px); }
 .magic-card > *             { position: relative; z-index: 1; }
 
 /* ── Inputs ───────────────────────────────────────── */
 .input-field {
-  background: #0d0d14;
-  border: 1px solid #1e1e2e;
-  color: #e2e2f0;
+  background: var(--color-well);
+  border: 1px solid var(--color-border);
+  color: var(--color-fg);
   border-radius: 8px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.input-field::placeholder { color: #6b6b8a; }
+.input-field::placeholder { color: var(--color-muted); }
 
 .input-field:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 /* ── Utility ──────────────────────────────────────── */
-.live-dot     { animation: pulse-dot 2s ease-in-out infinite; }
+.live-dot      { animation: pulse-dot 2s ease-in-out infinite; }
 .animate-entry { animation: fadeSlideIn 0.3s ease forwards; }

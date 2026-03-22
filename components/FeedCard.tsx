@@ -5,8 +5,8 @@ import { formatDistanceToNow } from "date-fns";
 import type { BuildLog } from "@/lib/supabase";
 
 const AVATAR_COLORS = [
-  "#6366f1", "#8b5cf6", "#ec4899", "#06b6d4",
-  "#10b981", "#f59e0b", "#ef4444", "#3b82f6",
+  "#6366f1", "#818cf8", "#a78bfa", "#34d399",
+  "#22d3ee", "#60a5fa", "#c084fc", "#f472b6",
 ];
 
 function getAvatarColor(name: string): string {
@@ -61,13 +61,11 @@ export default function FeedCard({
       }}
     >
       <div className="flex items-start gap-4">
-        {/* Avatar with color ring on hover */}
-        <div className="group/avatar shrink-0 mt-0.5">
+        {/* Avatar */}
+        <div className="shrink-0 mt-0.5">
           <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white transition-shadow duration-200"
-            style={{
-              backgroundColor: avatarColor,
-            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+            style={{ backgroundColor: avatarColor }}
           >
             {initial}
           </div>
@@ -75,18 +73,18 @@ export default function FeedCard({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="font-semibold text-[#e2e2f0] text-sm">{log.name}</span>
-            <span className="text-[#3a3a5a] text-xs">·</span>
-            <span className="text-[#6b6b8a] text-xs">{timeAgo}</span>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="font-semibold text-fg text-sm">{log.name}</span>
+            <span className="text-dim text-xs">·</span>
+            <span className="text-muted text-xs">{timeAgo}</span>
           </div>
-          <p className="text-[#b0b0cc] text-sm leading-relaxed">{log.description}</p>
+          <p className="text-fg/75 text-sm leading-relaxed">{log.description}</p>
           {log.project_link && (
             <a
               href={log.project_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#818cf8] hover:text-[#a5b4fc] transition-colors group"
+              className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-accent-soft hover:text-accent-bright transition-colors group"
             >
               <svg
                 className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"

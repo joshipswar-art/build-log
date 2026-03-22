@@ -11,8 +11,8 @@ export default function Feed({
   if (logs.length === 0) {
     return (
       <div className="text-center py-20">
-        <p className="text-[#3a3a5a] text-4xl mb-3">📭</p>
-        <p className="text-[#6b6b8a] text-sm">No ships yet. Be the first to post.</p>
+        <p className="text-dim text-4xl mb-3">📭</p>
+        <p className="text-muted text-sm">No ships yet. Be the first to post.</p>
       </div>
     );
   }
