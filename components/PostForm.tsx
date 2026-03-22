@@ -1,12 +1,32 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
+import confetti from "canvas-confetti";
 import { submitBuildLog } from "@/app/actions";
+import { ShimmerButton } from "./ShimmerButton";
 
 export default function PostForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  function fireConfetti() {
+    if (!buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { x, y },
+      colors: ["#6366f1", "#a5b4fc", "#818cf8", "#e2e2f0", "#c7d2fe"],
+      ticks: 200,
+      gravity: 0.9,
+      scalar: 0.9,
+    });
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,6 +39,7 @@ export default function PostForm() {
         setError(result.error);
       } else {
         formRef.current?.reset();
+        fireConfetti();
       }
     });
   }
@@ -60,13 +81,15 @@ export default function PostForm() {
           </p>
         )}
 
-        <button
+        <ShimmerButton
+          ref={buttonRef}
           type="submit"
           disabled={isPending}
-          className="btn-glow w-full py-3 text-sm font-semibold text-white cursor-pointer"
+          shimmerColor="#ffffff"
+          background="rgba(99, 102, 241, 1)"
         >
-          <span>{isPending ? "Posting…" : "Ship It →"}</span>
-        </button>
+          {isPending ? "Posting…" : "Ship It →"}
+        </ShimmerButton>
       </form>
     </div>
   );

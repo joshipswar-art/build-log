@@ -9,6 +9,52 @@
   --color-text-secondary: #6b6b8a;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Shimmer button animations */
+  --animate-shimmer-slide: shimmer-slide var(--speed, 3s) linear infinite;
+  --animate-spin-around: spin-around calc(var(--speed, 3s) * 2) linear infinite;
+
+  /* Gradient text/badge */
+  --animate-gradient: gradient 6s linear infinite;
+
+  /* Spotlight */
+  --animate-spotlight: spotlight 2s ease 0.75s forwards;
+
+  @keyframes shimmer-slide {
+    0%   { transform: translateX(-100%) translateY(-100%); }
+    100% { transform: translateX(100%) translateY(100%); }
+  }
+
+  @keyframes spin-around {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes gradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes spotlight {
+    0%   { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 }
 
 body {
@@ -18,11 +64,26 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Dot grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, #1e1e2e 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All content above dot grid */
+main { position: relative; z-index: 1; }
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: #1e1e2e; border-radius: 3px; }
 
-/* Magic card — radial glow tracks mouse via JS */
+/* ── Magic card ───────────────────────────────────── */
 .magic-card {
   position: relative;
   background: #111118;
@@ -47,15 +108,11 @@ body {
   z-index: 0;
 }
 
-.magic-card:hover::before { opacity: 1; }
-.magic-card:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  transform: translateY(-1px);
-}
+.magic-card:hover::before   { opacity: 1; }
+.magic-card:hover           { border-color: rgba(99, 102, 241, 0.35); transform: translateY(-1px); }
+.magic-card > *             { position: relative; z-index: 1; }
 
-.magic-card > * { position: relative; z-index: 1; }
-
-/* Input */
+/* ── Inputs ───────────────────────────────────────── */
 .input-field {
   background: #0d0d14;
   border: 1px solid #1e1e2e;
@@ -72,47 +129,6 @@ body {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
 }
 
-/* Glow button */
-.btn-glow {
-  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
-  position: relative;
-  overflow: hidden;
-  transition: opacity 0.2s, transform 0.1s;
-  border-radius: 8px;
-}
-
-.btn-glow::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.btn-glow:hover::after { opacity: 1; }
-.btn-glow:active { transform: scale(0.98); }
-.btn-glow span { position: relative; z-index: 1; }
-.btn-glow:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #e2e2f0 0%, #a5b4fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Live pulse */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-.live-dot { animation: pulse-dot 2s ease-in-out infinite; }
-
-/* Card entry animation */
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* ── Utility ──────────────────────────────────────── */
+.live-dot     { animation: pulse-dot 2s ease-in-out infinite; }
 .animate-entry { animation: fadeSlideIn 0.3s ease forwards; }

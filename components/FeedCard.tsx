@@ -20,23 +20,23 @@ function getAvatarColor(name: string): string {
 export default function FeedCard({
   log,
   isNew = false,
+  index = 0,
 }: {
   log: BuildLog;
   isNew?: boolean;
+  index?: number;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Track mouse position for magic glow
+  // Track mouse for magic glow
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-
     function handleMouseMove(e: MouseEvent) {
       const rect = card!.getBoundingClientRect();
       card!.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
       card!.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
     }
-
     card.addEventListener("mousemove", handleMouseMove);
     return () => card.removeEventListener("mousemove", handleMouseMove);
   }, []);
@@ -45,18 +45,32 @@ export default function FeedCard({
   const initial = log.name.charAt(0).toUpperCase();
   const timeAgo = formatDistanceToNow(new Date(log.created_at), { addSuffix: true });
 
+  // Stagger delay capped at 400ms
+  const staggerDelay = isNew ? 0 : Math.min(index * 60, 400);
+
   return (
     <div
       ref={cardRef}
-      className={`magic-card p-5 ${isNew ? "animate-entry" : ""}`}
+      className="magic-card p-5"
+      style={{
+        animationName: "fadeSlideIn",
+        animationDuration: "0.35s",
+        animationTimingFunction: "ease",
+        animationFillMode: "both",
+        animationDelay: `${staggerDelay}ms`,
+      }}
     >
       <div className="flex items-start gap-4">
-        {/* Avatar */}
-        <div
-          className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 mt-0.5"
-          style={{ backgroundColor: avatarColor }}
-        >
-          {initial}
+        {/* Avatar with color ring on hover */}
+        <div className="group/avatar shrink-0 mt-0.5">
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white transition-shadow duration-200"
+            style={{
+              backgroundColor: avatarColor,
+            }}
+          >
+            {initial}
+          </div>
         </div>
 
         {/* Content */}
@@ -72,18 +86,28 @@ export default function FeedCard({
               href={log.project_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#818cf8] hover:text-[#a5b4fc] transition-colors"
+              className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#818cf8] hover:text-[#a5b4fc] transition-colors group"
             >
-              <span className="w-3.5 h-3.5 opacity-70">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M6 10l4-4M10 6H7M10 6v3" strokeLinecap="round" strokeLinejoin="round" />
-                  <rect x="2" y="2" width="12" height="12" rx="2" />
-                </svg>
-              </span>
+              <svg
+                className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M6 10l4-4M10 6H7M10 6v3" strokeLinecap="round" strokeLinejoin="round" />
+                <rect x="2" y="2" width="12" height="12" rx="2" />
+              </svg>
               View Project
             </a>
           )}
         </div>
+
+        {/* Colored accent dot matching avatar */}
+        <div
+          className="w-1.5 h-1.5 rounded-full mt-2 shrink-0 opacity-40"
+          style={{ backgroundColor: avatarColor }}
+        />
       </div>
     </div>
   );

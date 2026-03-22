@@ -17,12 +17,10 @@ export default function Feed({ initial }: { initial: BuildLog[] }) {
         (payload) => {
           const incoming = payload.new as BuildLog;
           setLogs((prev) => {
-            // Avoid duplicates (server action already revalidated)
             if (prev.some((l) => l.id === incoming.id)) return prev;
             return [incoming, ...prev];
           });
           setNewIds((prev) => new Set(prev).add(incoming.id));
-          // Remove "new" flag after animation completes
           setTimeout(() => {
             setNewIds((prev) => {
               const next = new Set(prev);
@@ -48,8 +46,13 @@ export default function Feed({ initial }: { initial: BuildLog[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {logs.map((log) => (
-        <FeedCard key={log.id} log={log} isNew={newIds.has(log.id)} />
+      {logs.map((log, i) => (
+        <FeedCard
+          key={log.id}
+          log={log}
+          isNew={newIds.has(log.id)}
+          index={i}
+        />
       ))}
     </div>
   );
