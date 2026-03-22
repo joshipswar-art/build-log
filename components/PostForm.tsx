@@ -4,8 +4,9 @@ import { useRef, useState, useTransition } from "react";
 import confetti from "canvas-confetti";
 import { submitBuildLog } from "@/app/actions";
 import { ShimmerButton } from "./ShimmerButton";
+import type { BuildLog } from "@/lib/supabase";
 
-export default function PostForm() {
+export default function PostForm({ onSuccess }: { onSuccess?: (log: BuildLog) => void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +41,7 @@ export default function PostForm() {
       } else {
         formRef.current?.reset();
         fireConfetti();
+        if (result.log) onSuccess?.(result.log);
       }
     });
   }

@@ -1,6 +1,5 @@
 import { supabase, type BuildLog } from "@/lib/supabase";
-import PostForm from "@/components/PostForm";
-import Feed from "@/components/Feed";
+import BuildLogClient from "@/components/BuildLogClient";
 import { Spotlight } from "@/components/Spotlight";
 import { AnimatedGradientBadge, AnimatedGradientHeading } from "@/components/AnimatedGradientText";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -40,9 +39,6 @@ export default async function Page() {
           </p>
         </div>
 
-        {/* Form */}
-        <PostForm />
-
         {/* Divider with animated counter */}
         <div className="flex items-center gap-3 mb-6">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#1e1e2e]" />
@@ -53,8 +49,8 @@ export default async function Page() {
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#1e1e2e]" />
         </div>
 
-        {/* Feed */}
-        <Feed initial={logs} />
+        {/* Form + Feed (client, shared state) */}
+        <BuildLogClient initial={logs} />
       </div>
     </main>
   );

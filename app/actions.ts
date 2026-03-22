@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 
 export async function submitBuildLog(formData: FormData) {
@@ -12,14 +11,15 @@ export async function submitBuildLog(formData: FormData) {
     return { error: "Name and description are required." };
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("build_logs")
-    .insert({ name, description, project_link });
+    .insert({ name, description, project_link })
+    .select()
+    .single();
 
   if (error) {
     return { error: "Failed to post. Try again." };
   }
 
-  revalidatePath("/");
-  return { success: true };
+  return { success: true, log: data };
 }
