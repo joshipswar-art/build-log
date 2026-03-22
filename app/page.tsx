@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { supabase, type BuildLog } from "@/lib/supabase";
 import BuildLogClient from "@/components/BuildLogClient";
 import { Spotlight } from "@/components/Spotlight";
