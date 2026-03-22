@@ -34,10 +34,9 @@ export default function BuildLogClient({ initial }: { initial: BuildLog[] }) {
     setNewIds((prev) => new Set(prev).add(id));
     setTimeout(() => {
       setNewIds((prev) => { const n = new Set(prev); n.delete(id); return n; });
-    }, 600);
+    }, 800);
   }
 
-  // Called by PostForm immediately after server action succeeds
   function handleNewLog(log: BuildLog) {
     setLogs((prev) => {
       if (prev.some((l) => l.id === log.id)) return prev;
@@ -47,9 +46,14 @@ export default function BuildLogClient({ initial }: { initial: BuildLog[] }) {
   }
 
   return (
-    <>
-      <PostForm onSuccess={handleNewLog} />
+    <div className="grid md:grid-cols-[380px_1fr] gap-6 md:gap-8 items-start">
+      {/* Left — sticky form */}
+      <div className="md:sticky md:top-8">
+        <PostForm onSuccess={handleNewLog} />
+      </div>
+
+      {/* Right — scrollable feed */}
       <Feed logs={logs} newIds={newIds} />
-    </>
+    </div>
   );
 }

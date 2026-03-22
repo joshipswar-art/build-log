@@ -2,9 +2,10 @@ export const dynamic = "force-dynamic";
 
 import { supabase, type BuildLog } from "@/lib/supabase";
 import BuildLogClient from "@/components/BuildLogClient";
-import { Spotlight } from "@/components/Spotlight";
-import { AnimatedGradientBadge, AnimatedGradientHeading } from "@/components/AnimatedGradientText";
+import { AuroraBackground } from "@/components/AuroraBackground";
+import { AnimatedGradientBadge } from "@/components/AnimatedGradientText";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { TerminalText } from "@/components/TerminalText";
 
 export default async function Page() {
   const { data } = await supabase
@@ -15,43 +16,48 @@ export default async function Page() {
   const logs: BuildLog[] = data ?? [];
 
   return (
-    <main className="min-h-screen px-4 py-12 overflow-hidden">
-      {/* Spotlight beam */}
-      <div className="pointer-events-none absolute inset-0 flex items-start justify-center overflow-hidden">
-        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
-      </div>
+    <main className="min-h-screen px-4 py-14 overflow-hidden">
+      <AuroraBackground />
 
-      <div className="relative max-w-xl mx-auto">
+      <div className="relative max-w-5xl mx-auto">
 
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <AnimatedGradientBadge>
-            <div className="flex items-center gap-2 text-accent-bright">
-              <div className="w-1.5 h-1.5 rounded-full bg-ship live-dot" />
-              <span className="uppercase tracking-wider">Live feed</span>
+        {/* Hero */}
+        <div className="mb-14 text-center">
+
+          {/* Badge row */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <AnimatedGradientBadge>
+              <div className="flex items-center gap-2 text-accent-bright">
+                <div
+                  className="w-1.5 h-1.5 rounded-full live-dot"
+                  style={{ backgroundColor: "#34d399" }}
+                />
+                <span className="uppercase tracking-wider">Live feed</span>
+              </div>
+            </AnimatedGradientBadge>
+
+            <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs backdrop-blur-sm">
+              <span className="tabular-nums font-bold text-fg">
+                <AnimatedCounter target={logs.length} />
+              </span>
+              <span className="text-muted">{logs.length === 1 ? "ship" : "ships"}</span>
             </div>
-          </AnimatedGradientBadge>
+          </div>
 
-          <h1 className="text-5xl font-bold tracking-tight mt-5 mb-3">
-            <AnimatedGradientHeading>Build Log</AnimatedGradientHeading>
-          </h1>
+          {/* Title — full typewriter on one line */}
+          <div
+            className="font-medium tracking-tight mb-6 text-[clamp(2.8rem,7vw,5.5rem)] leading-none"
+            style={{ fontFamily: "var(--font-terminal)", color: "#34d399" }}
+          >
+            <TerminalText text="Build log" charDelay={100} />
+          </div>
 
-          <p className="text-muted text-sm">
+          <p className="text-muted text-base max-w-xs mx-auto leading-relaxed">
             What&apos;s your cohort shipping this week?
           </p>
         </div>
 
-        {/* Divider with animated counter */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-border" />
-          <span className="text-xs text-dim tabular-nums">
-            <AnimatedCounter target={logs.length} />{" "}
-            {logs.length === 1 ? "ship" : "ships"}
-          </span>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-border" />
-        </div>
-
-        {/* Form + Feed (client, shared state) */}
+        {/* Two-column layout */}
         <BuildLogClient initial={logs} />
       </div>
     </main>
